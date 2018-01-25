@@ -27,9 +27,8 @@ public class OnLoan implements LBState{
 
 	@Override
 	public void returnBook(LibraryBook book) throws NotAllowedException{
-		//System.out.println("Leaving State" + book.toString() + "for State Returned");
 		book.setState(Returned.getInst());
-		System.out.println("Leaving State " + this.toString() + " for State Returned");
+		System.out.println("Leaving state " + this.toString() + " for State Returned");
 		
 	}
 
@@ -40,8 +39,9 @@ public class OnLoan implements LBState{
 
 	@Override
 	public void extend(LibraryBook book) {
-		System.out.println("Leaving State " + this.toString() + " for State OnLoan");
 		book.setState(this);
+		System.out.println("Leaving State " + this.toString() + " for State OnLoan");
+
 		
 	}
 }

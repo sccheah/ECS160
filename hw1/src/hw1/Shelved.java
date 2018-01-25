@@ -23,17 +23,16 @@ public class Shelved implements LBState{
 	@Override
 	public void shelf(LibraryBook book) throws NotAllowedException{
 		throw new NotAllowedException("Can't use shelf in Shelved state");
-		
 	}
 
 	@Override
 	public void returnBook(LibraryBook book) throws NotAllowedException{
 		throw new NotAllowedException("Can't use returnBook in Shelved state");
-		
 	}
 
 	@Override
 	public void borrow(LibraryBook book) throws NotAllowedException{
+		//System.out.println("Leaving State " + this.toString() +  " for State OnLoan");
 		book.setState(OnLoan.getInst());
 		System.out.println("Leaving State " + this.toString() +  " for State OnLoan");
 

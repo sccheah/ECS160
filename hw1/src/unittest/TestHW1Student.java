@@ -17,10 +17,12 @@ import org.junit.runners.MethodSorters;
 import org.junit.Test;
 
 import hw1.DatabaseManager;
+import hw1.DestObserver;
 //import hw1.DestObserver;
 //import hw1.LibraryBook;
 //import hw1.SourceObserver;
 import hw1.LibraryBook;
+import hw1.SourceObserver;
 
 //Typically test execution is arbitrary, this fixes the order
 //to run Question1 -> 2 -> 3, which is needed to test the messages
@@ -140,25 +142,33 @@ public class TestHW1Student {
 		SourceObserver a = new SourceObserver("Alice");
 		DestObserver b = new DestObserver("Bob");
 		
-		b1.detach(b);
-		b1.attach(a);
-		b1.attach(b);
-		b2.attach(b);
+		b1.detach(b);	// 
+		b1.attach(a);	// Alice is now watching The Signal And The Noise
+		b1.attach(b);	// Bob is now watching The Signal And The Noise
+		b2.attach(b);	// Bob is now watching Deep Learning
 				
-		b1.borrow();
-		b1.extend();
-		b1.detach(a);
-		b1.extend();
-		b1.returnBook();
-		b1.shelf();
-		
-		b2.shelf();
-		b2.borrow();
-		b2.attach(a);
-		b2.returnBook();
-		b2.detach(b);
-		b2.shelf();
-		b2.borrow();
+		b1.borrow();		// Leaving State Shelved for State OnLoan
+						// Alice OBSERVED The Signal And The Noise LEAVING STATE: UNOBSERVED
+						// Bob OBSERVED The Signal And The Noise REACHING STATE: OnLoan
+		b1.extend();		// Leaving State OnLoan for State OnLoan
+		b1.detach(a);	// Alice is no longer watching The Signal And The Noise
+		b1.extend();		// Leaving State OnLoan for State OnLoan
+		b1.returnBook();	// Leaving State OnLoan for State Returned 
+						// Bob OBSERVED The Signal And The Noise REACHING STATE: Returned
+		b1.shelf();		// Leaving State Returned for State Shelved
+						// Bob OBSERVED The Signal And The Noise REACHING STATE: Shelved
+		b2.shelf();		// hw1.NotAllowedException: Can't use shelf in Shelved state
+		b2.borrow();		// Leaving State Shelved for State OnLoan
+						// Bob OBSERVED Deep Learning REACHING STATE: OnLoan ---
+		b2.attach(a);	// Alice is now watching Deep Learning
+		b2.returnBook();	// Leaving State OnLoan for State Returned
+						// Bob OBSERVED Deep Learning Reaching STATE: Returned
+						// Alice OBSERVED Deep LEarning LEAVING STATE: UNOBSERVED -- OUTPUT OnLoan
+		b2.detach(b);	// Bob is no longer watching Deep Learning
+		b2.shelf();		// Leaving State Returned for State Shelved
+						// Alice OBSERVED Deep LEarning LEAVING STATE: Returned -- OUTPUT OnLoan
+		b2.borrow();		// Leaving State Shelved for State OnLoan
+						// Alice OBSERVED Deep Learning LEAVING STATE: Shelved -- NO OUTPUT
 		
 		//Tracking your output ends here.
 		
