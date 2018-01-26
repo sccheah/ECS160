@@ -32,7 +32,6 @@ public class Shelved implements LBState{
 
 	@Override
 	public void borrow(LibraryBook book) throws NotAllowedException{
-		//System.out.println("Leaving State " + this.toString() +  " for State OnLoan");
 		book.setState(OnLoan.getInst());
 		System.out.println("Leaving State " + this.toString() +  " for State OnLoan");
 

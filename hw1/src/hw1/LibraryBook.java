@@ -65,7 +65,6 @@ public class LibraryBook {
 		System.out.println(observer.getName() + " is now watching " + name);
 		observers.add(observer);
 		observer.attachBook(this);
-		//observer.clearHistory();
 	}
 	
 	public void detach(Observer observer) {
